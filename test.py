@@ -40,7 +40,7 @@ if __name__ == '__main__':
                                                                             'mae_mp' : util.mae_mp})
     print(model.summary())
 
-    R, Z, y = util.get_data(f'/theoryfs2/ds/glick/gits/directional-mpnn/data/{args.dataset}.pkl', pad_dim)
+    R, Z, y = util.get_data(f'data/{args.dataset}.pkl', pad_dim)
 
     # monopole
     y_ = y[:,:,0]

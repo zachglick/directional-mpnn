@@ -60,8 +60,8 @@ if __name__ == '__main__':
     print(model.summary())
 
     # load data
-    RT, ZT, yT = util.get_data(f'/theoryfs2/ds/glick/gits/directional-mpnn/data/{args.dataset_train}.pkl', pad_dim)
-    RV, ZV, yV = util.get_data(f'/theoryfs2/ds/glick/gits/directional-mpnn/data/{args.dataset_val}.pkl', pad_dim)
+    RT, ZT, yT = util.get_data(f'data/{args.dataset_train}.pkl', pad_dim)
+    RV, ZV, yV = util.get_data(f'data/{args.dataset_val}.pkl', pad_dim)
 
     #RT, ZT, yT = RT[:800], ZT[:800], yT[:800]
     #RV, ZV, yV = RV[:800], ZV[:800], yV[:800]
