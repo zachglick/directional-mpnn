@@ -82,12 +82,15 @@ if __name__ == '__main__':
     for Z_subset, y_subset in [(ZV, [yV_, yV_i_, yV_ii_, yV_ij_])]:
         y_subset_pos = [ys[Z_subset > 0] for ys in y_subset]
         mad = [np.mean(np.abs(ys - np.mean(ys))) for ys in y_subset_pos]
-        print(f'ALL ({y_subset_pos[0].shape[0]:5d}) : q({mad[0]:.4f}) mu({mad[1]:.4f}) Qii({mad[2]:.4f}) Qij({mad[3]:.4f})')
+        print(f'ALL ({y_subset_pos[0].shape[0]:6d}) : q({mad[0]:.4f}) mu({mad[1]:.4f}) Qii({mad[2]:.4f}) Qij({mad[3]:.4f})')
         for name, z in elem_z.items():
             mask = (Z_subset == z)
             y_element = [ys_[mask] for ys_ in y_subset]
-            mad = [np.mean(np.abs(ys - np.mean(ys))) for ys in y_element]
-            print(f'{name:3s} ({np.sum(mask):5d}) : q({mad[0]:.4f}) mu({mad[1]:.4f}) Qii({mad[2]:.4f}) Qij({mad[3]:.4f})')
+            if np.sum(mask) > 0:
+                mad = [np.mean(np.abs(ys - np.mean(ys))) for ys in y_element]
+            else:
+                mad = [np.nan for ys in y_element]
+            print(f'{name:3s} ({np.sum(mask):6d}) : q({mad[0]:.4f}) mu({mad[1]:.4f}) Qii({mad[2]:.4f}) Qij({mad[3]:.4f})')
         print()
 
     print('Fitting Model...')
@@ -115,10 +118,13 @@ if __name__ == '__main__':
     for Z_subset, y_subset in [(ZV, [yV_err, yV_i_err, yV_ii_err, yV_ij_err])]:
         y_subset_pos = [ys[Z_subset > 0] for ys in y_subset]
         mae = [np.mean(np.abs(ys)) for ys in y_subset_pos]
-        print(f'ALL ({y_subset_pos[0].shape[0]:5d}) : q({mae[0]:.4f}) mu({mae[1]:.4f}) Qii({mae[2]:.4f}) Qij({mae[3]:.4f})')
+        print(f'ALL ({y_subset_pos[0].shape[0]:6d}) : q({mae[0]:.4f}) mu({mae[1]:.4f}) Qii({mae[2]:.4f}) Qij({mae[3]:.4f})')
         for name, z in elem_z.items():
             mask = (Z_subset == z)
             y_element = [ys_[mask] for ys_ in y_subset]
-            mae = [np.mean(np.abs(ys)) for ys in y_element]
-            print(f'{name:3s} ({np.sum(mask):5d}) : q({mae[0]:.4f}) mu({mae[1]:.4f}) Qii({mae[2]:.4f}) Qij({mae[3]:.4f})')
+            if np.sum(mask) > 0:
+                mae = [np.mean(np.abs(ys)) for ys in y_element]
+            else:
+                mae = [np.nan for ys in y_element]
+            print(f'{name:3s} ({np.sum(mask):6d}) : q({mae[0]:.4f}) mu({mae[1]:.4f}) Qii({mae[2]:.4f}) Qij({mae[3]:.4f})')
         print()

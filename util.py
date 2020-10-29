@@ -383,15 +383,19 @@ def get_model(mus, etas, natom, nelem, nembed, nnodes, nmessage):
     else:
         y_v_ = Add()(y_v_list)
 
-    # this should be 0.0 for neutral monomers
-    molecule_charge = tf.math.reduce_sum(y_, axis=1)
+    ## this should be 0.0 for neutral monomers
+    #molecule_charge = tf.math.reduce_sum(y_, axis=1)
 
-    # average this error (extra predicted charge) over atoms of the monomer
-    molecule_charge = tf.math.divide(molecule_charge, tf.math.reduce_sum(mask, axis=1))
-    error = tf.einsum('ij,i->ij', mask, molecule_charge) 
+    ## average this error (extra predicted charge) over atoms of the monomer
+    #molecule_charge = tf.math.divide(molecule_charge, tf.math.reduce_sum(mask, axis=1))
+    #charge_error = tf.einsum('ij,i->ij', mask, molecule_charge) 
 
-    # update predictions: guaranteed neutral monomers 
-    output = Subtract()([y_, error])
+    ## update predictions: guaranteed neutral monomers 
+    #y_ = Subtract()([y_, charge_error])
+
+    # the trace should be 0.0 for each atomic quadrupole (this is trace / 3.0)
+    quadrupole_trace = tf.math.reduce_mean(y_ii_, axis=2, keepdims=True)
+    y_ii_ = Subtract()([y_ii_, quadrupole_trace])
 
     y_ = Lambda(lambda x: x, name='q')(y_)
     y_i_ = Lambda(lambda x: x, name='mu_i')(y_i_)
